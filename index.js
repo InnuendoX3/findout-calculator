@@ -19,7 +19,8 @@ rl.on("line", (input) => {
    Return 'order' {
       type: register, print or exit
       parts: array with the parts
-      error: message on error
+      error: true/false
+      errorMsg: message on error
    }
  */
 function identifyInput(input) {
@@ -27,26 +28,61 @@ function identifyInput(input) {
    let partsQty = parts.length;
    let order = {};
    switch (partsQty) {
-      case 0:
-         order.error ="Enter a command. Trying to end the program? Enter: Quit";
       case 1:
-         order.type = "exit";
+         order = validateOneEntry(parts[0]);
          break;
       case 2:
-         order.type = "print";
+         order = validateTwoEntries(parts);
          break;
       case 3:
-         order.type = "register";
+         order = validateThreeEntries(parts);
          break;
       default:
-         order.error = "If you are trying to register follow this systax: <register> <operation> <value>";
+         order.error = "If you are trying to register follow this syntax: <register> <operation> <value>";
          break;
    }
 
    console.log(order)
-   console.log(parts)
+   //console.log(parts)
+}
 
-/*    for (const part of parts) {
-      console.log(part);
-   } */
-};
+function validateOneEntry(entry) {
+   let order = {};
+   if (entry == "quit2") {
+      order.type = "exit";
+      order.error = false;
+   } else {
+      order.error = true;
+      order.errorMsg = "To end the program type: Quit"
+   }
+
+   return order;
+}
+
+function validateTwoEntries(entries) {
+   let order = {};
+   order.parts = entries;
+   if (entries[0] == "print") {
+      order.type = "print";      
+      order.error = false;
+   } else {
+      order.error = true;
+      order.errorMsg = 'To see a register value type: Print <register>';
+   }
+
+   return order;
+}
+
+function validateThreeEntries(entries) {
+   let order = {};
+   order.parts = entries;
+   if (entries[1] == "add") {
+      order.type = "operation";
+      order.error = false;
+   } else {
+      order.error = true;
+      order.errorMsg = 'To add to a register follow this syntax: <register> add <value>';
+   }
+
+   return order;
+}
