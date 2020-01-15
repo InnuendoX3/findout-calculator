@@ -1,7 +1,43 @@
-//const operations = require("./prog-modules/operations");
+const operations = require("./operations");
 
-function oneEntry(entry) {
+/* --------------------------- 
+   Divide user input in parts:
+   - 3 parts: Make a register
+   - 2 parts: Print
+   - 1 part:  Exit
+   Return 'order' {
+      type: register, print or exit
+      parts: array with the parts
+      error: true/false
+      errorMsg: message on error
+   }
+ ------------------------------ */
+ 
+function identifyInput(input) {
+   let parts = input.split(" ");
+   let partsQty = parts.length;
    let order = {};
+   switch (partsQty) {
+      case 1:
+         order = validateOneEntry(parts[0]);
+         break;
+      case 2:
+         order = validateTwoEntries(parts);
+         break;
+      case 3:
+         order = validateThreeEntries(parts);
+         break;
+      default:
+         order.error = "If you are trying to register follow this syntax: <register> <operation> <value>";
+         break;
+   }
+   console.log(order);
+}
+
+
+function validateOneEntry(entry) {
+   let order = {};
+   order.parts = entry;
    if (entry == "quit2") {
       order.type = "exit";
       order.error = false;
@@ -13,7 +49,7 @@ function oneEntry(entry) {
    return order;
 }
 
-function twoEntries(entries) {
+function validateTwoEntries(entries) {
    let order = {};
    order.parts = entries;
    if (entries[0] == "print") {
@@ -27,18 +63,22 @@ function twoEntries(entries) {
    return order;
 }
 
-function threeEntries(entries) {
+function validateThreeEntries(entries) {
    let order = {};
    order.parts = entries;
-   if (entries[1] == "add") {
-      order.type = "operation";
-      order.error = false;
-   } else {
-      order.error = true;
-      order.errorMsg = 'To add to a register follow this syntax: <register> add <value>';
+
+   for (const op of operations) {
+      if (entries[1] == op.operation) {
+         order.type = "register";
+         order.error = false;
+         return order;
+      }
    }
+
+   order.error = true;
+   order.errorMsg = "To make a register use an operation word: Add, Subtract or Multiply";
 
    return order;
 }
 
-module.exports = {oneEntry, twoEntries, threeEntries}
+module.exports = identifyInput;
