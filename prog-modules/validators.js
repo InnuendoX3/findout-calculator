@@ -1,4 +1,5 @@
 const operations = require("./operations");
+const Order = require("./classes");
 
 /* --------------------------- 
    Divide user input in parts:
@@ -16,7 +17,7 @@ const operations = require("./operations");
 function identifyInput(input) {
    let parts = input.split(" ");
    let partsQty = parts.length;
-   let order = {};
+   let order = new Order();
    switch (partsQty) {
       case 1:
          order = validateOneEntry(parts[0]);
@@ -31,16 +32,15 @@ function identifyInput(input) {
          order.error = "If you are trying to register follow this syntax: <register> <operation> <value>";
          break;
    }
-
+   console.log(order);
    return order;
-   // console.log(order);
 }
 
 
 function validateOneEntry(entry) {
-   let order = {};
+   let order = new Order();
    order.parts = entry;
-   if (entry == "quit2") {
+   if (entry == "quit") {
       order.type = "exit";
       order.error = false;
    } else {
@@ -52,7 +52,7 @@ function validateOneEntry(entry) {
 }
 
 function validateTwoEntries(entries) {
-   let order = {};
+   let order = new Order();
    order.parts = entries;
    if (entries[0] == "print") {
       order.type = "print";      
@@ -66,7 +66,7 @@ function validateTwoEntries(entries) {
 }
 
 function validateThreeEntries(entries) {
-   let order = {};
+   let order = new Order();
    order.parts = entries;
 
    for (const op of operations) {

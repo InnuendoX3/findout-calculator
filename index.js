@@ -3,13 +3,10 @@ const validate = require("./prog-modules/validators");
 const execute = require('./prog-modules/execute');
 
 let order = {};
-let variables = [];
+
 
 rl.on("line", (input) => {
    input = input.trim().toLowerCase();
-   if (input == "quit") {
-      process.exit();
-   }
 
    order = validate(input);
    if (order.error) {
