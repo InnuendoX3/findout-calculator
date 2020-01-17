@@ -31,7 +31,9 @@ function identifyInput(input) {
          order.error = "If you are trying to register follow this syntax: <register> <operation> <value>";
          break;
    }
-   console.log(order);
+
+   return order;
+   // console.log(order);
 }
 
 
