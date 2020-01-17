@@ -37,16 +37,18 @@ function orderPrint(order) {
 
 function orderRegister(order) {
    let variable = new Variable();
+
    // Find if variable is already on variables array / taken from Mozilla
-   let allreadyVariable = variables.find( ({ name }) => name === order.parts[0]);
+   let allreadyVariable = variables.find(({ name }) => name === order.parts[0]);
+
    if (allreadyVariable !== undefined) {
-      makeOperation(order, allreadyVariable)
+      //makeOperation(order, allreadyVariable)
       console.log("esta en variables")
 
    } else {
       console.log("no esta en variables")
       variable.name = order.parts[0];
-      variable.value = order.parts[2];
+      variable.value = secondRegisterOrNumber(order);
       console.log(variable);
       variables.push(variable);
    }
@@ -60,6 +62,23 @@ function makeOperation(order, avariable) {
       if (order.parts[1] === operation.operation) {
          avariable.value = avariable.value + order.parts[2];
       }
+   }
+}
+
+function secondRegisterOrNumber(order) {
+   // Controling the thrid part
+   if (isNaN(order.parts[2])) {
+      // If second register exists return its value
+      var variableToUse = variables.find(({ name }) => name === order.parts[2]);
+      if (variableToUse != undefined) {
+         console.log(variableToUse.value)
+         return variableToUse.value
+      } else {
+         console.log(`${order.parts[2]} does not exist.`)
+         // salir de la funcion sin seguir
+      }
+   } else {
+      return Number(order.parts[2]);
    }
 }
 
