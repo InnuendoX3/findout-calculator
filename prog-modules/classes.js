@@ -7,4 +7,11 @@ class Order {
    }
 }
 
-module.exports = Order;
+class Variable {
+   constructor(name, value) {
+      this.name = name;
+      this.value = 0;
+   }
+}
+
+module.exports = {Order, Variable};

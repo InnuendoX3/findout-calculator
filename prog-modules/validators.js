@@ -1,5 +1,6 @@
 const operations = require("./operations");
-const Order = require("./classes");
+const classes = require("./classes");
+const Order = classes.Order;
 
 /* --------------------------- 
    Divide user input in parts:
@@ -32,7 +33,7 @@ function identifyInput(input) {
          order.error = "If you are trying to register follow this syntax: <register> <operation> <value>";
          break;
    }
-   console.log(order);
+   // console.log(order);
    return order;
 }
 
@@ -69,6 +70,14 @@ function validateThreeEntries(entries) {
    let order = new Order();
    order.parts = entries;
 
+   // Check if first register name is valid
+   if (!isNaN(order.parts[0])) {
+      order.error = true;
+      order.errorMsg = `${order.parts[0]} is a number, please enter an alphanumeric register name`;
+      return order;
+   }
+
+   // Check if second word is an operation
    for (const op of operations) {
       if (entries[1] == op.operation) {
          order.type = "register";

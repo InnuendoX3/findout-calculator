@@ -1,12 +1,16 @@
+const classes = require("./classes");
+const operations = require("./operations");
+const Variable = classes.Variable;
+
 /* Variable {
-   name: variablename
-   content: numbers
+   name:
+   value:
 } */
+
 let variables = [];
 
 function execute(order) {
-   console.log("In execute");
-   
+   // console.log(order);
    switch (order.type) {
       case "exit":
          process.exit(); //funciona
@@ -32,16 +36,31 @@ function orderPrint(order) {
 }
 
 function orderRegister(order) {
-/*    for (const variable of variables) {
-      if (order.parts[0] == variable.variable) {
-         variable.content += order.parts[2];
-         break;
-      }            
+   let variable = new Variable();
+   // Find if variable is already on variables array / taken from Mozilla
+   let allreadyVariable = variables.find( ({ name }) => name === order.parts[0]);
+   if (allreadyVariable !== undefined) {
+      makeOperation(order, allreadyVariable)
+      console.log("esta en variables")
+
+   } else {
+      console.log("no esta en variables")
+      variable.name = order.parts[0];
+      variable.value = order.parts[2];
+      console.log(variable);
+      variables.push(variable);
    }
-   variable.name = order.parts[0];
-   variable.content = order.parts[2];
-   variables.push(variable)
-   console.log("En Function") */
+   console.log(variables);
+
+}
+
+// Mini functions for orderRegister
+function makeOperation(order, avariable) {
+   for (const operation of operations) {
+      if (order.parts[1] === operation.operation) {
+         avariable.value = avariable.value + order.parts[2];
+      }
+   }
 }
 
 module.exports = execute;

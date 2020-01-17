@@ -2,13 +2,11 @@ const rl = require("./prog-modules/config/readline");
 const validate = require("./prog-modules/validators");
 const execute = require('./prog-modules/execute');
 
-let order = {};
-
 
 rl.on("line", (input) => {
    input = input.trim().toLowerCase();
 
-   order = validate(input);
+   let order = validate(input);
    if (order.error) {
       console.log(order.errorMsg);
    } else {
