@@ -32,21 +32,26 @@ function orderExit(order) {
 }
 
 function orderPrint(order) {
-   console.log(`${order.parts[1]} esta siendo impresa`);
+   let variable = variables.find(({ name }) => name === order.parts[1]);
+   if (variable !== undefined) {
+      console.log(`${variable.name}: ${variable.value}`);
+   } else {
+      console.log(`"${order.parts[1]}" is not registered.`);
+   }
+   
 }
 
 function orderRegister(order) {
    
-
    // Find if variable is already on variables array / taken from Mozilla
    let alreadyVariable = variables.find(({ name }) => name === order.parts[0]);
 
    if (alreadyVariable !== undefined) {
       if (isSecRegisterValid(order)) {
          makeOperation(order, alreadyVariable)
-         console.log("First esta en variables y second register es un numero o variable VALIDA")
+         // console.log("First esta en variables y second register es un numero o variable VALIDA") DELETE
       } else {
-         console.log(`${order.parts[2]} does not exist registered.`);
+         console.log(`"${order.parts[2]}" is not registered.`);
       }
    } else {
 
@@ -54,16 +59,16 @@ function orderRegister(order) {
 
          makeNewRegister(order);
 
-         console.log("NO esta en variables y second register es un numero para guardar")
+         // console.log("NO esta en variables y second register es un numero para guardar") DELETE
       } else {
-         console.log(`${order.parts[2]} does not exist registered.`);
+         console.log(`"${order.parts[2]}" is not registered.`);
       }
 
    }
    console.log(variables);
-
 }
 
+// Make an operation on a new variable and push it
 function makeNewRegister(order) {
    let variable = new Variable();
 
@@ -82,7 +87,6 @@ function makeNewRegister(order) {
 function makeOperation(order, aVariable) {
    for (const operation of operations) {
       if (order.parts[1] === operation.operation) {
-         console.log( eval(aVariable.value + operation.operator + numberOrSecRegNumber(order)) );
          aVariable.value = eval(aVariable.value + operation.operator + numberOrSecRegNumber(order));
       }
    }
@@ -91,11 +95,6 @@ function makeOperation(order, aVariable) {
 // Return FALSE if second register is not on variables-array and NaN  WORKS!
 function isSecRegisterValid(order) {
    let secondRegister = variables.find(({ name }) => name === order.parts[2]);
-
-/*    console.log(secondRegister !== undefined)
-   console.log(!isNaN(order.parts[2]))
-   console.log(secondRegister !== undefined || !isNaN(order.parts[2])) */
-
    return secondRegister !== undefined || !isNaN(order.parts[2]);
 }
 
@@ -108,6 +107,5 @@ function numberOrSecRegNumber(order) {
       return Number(order.parts[2]);
    }
 }
-
 
 module.exports = execute;
