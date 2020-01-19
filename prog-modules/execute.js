@@ -42,17 +42,32 @@ function orderRegister(order) {
    let allreadyVariable = variables.find(({ name }) => name === order.parts[0]);
 
    if (allreadyVariable !== undefined) {
-      //makeOperation(order, allreadyVariable)
-      console.log("esta en variables")
-
+      if (isSecRegisterValid(order)) {
+         //makeOperation(order, allreadyVariable)
+         console.log("First esta en variables y second register es un numero o variable VALIDA")
+      } else {
+         console.log(`${order.parts[2]} does not exist registered.`);
+      }
    } else {
-      console.log("no esta en variables")
-      variable.name = order.parts[0];
-      variable.value = secondRegisterOrNumber(order);
-      console.log(variable);
-      variables.push(variable);
+
+      if (isSecRegisterValid(order)) {
+         variable.name = order.parts[0];
+         variable.value = numberOrSecRegister(order);
+         // console.log(variable);
+         variables.push(variable);
+         // makeOperation(order, allreadyVariable)   ???
+         console.log("NO esta en variables y second register es un numero para guardar")
+      } else {
+         console.log(`${order.parts[2]} does not exist registered.`);
+      }
+
    }
    console.log(variables);
+
+   /*       console.log(`${order.parts[2]} does not exist.`)
+         console.log(suspectedSecondRegister)
+         console.log(suspectedSecondRegister != undefined)
+         console.log(!isNaN(order.parts[2])) */
 
 }
 
@@ -65,21 +80,37 @@ function makeOperation(order, avariable) {
    }
 }
 
-function secondRegisterOrNumber(order) {
+// Return FALSE if second register is not on variables-array and NaN
+function isSecRegisterValid(order) {
+   let secondRegister = variables.find(({ name }) => name === order.parts[2]);
+
+   console.log(secondRegister !== undefined)
+   console.log(!isNaN(order.parts[2]))
+   console.log(secondRegister !== undefined || !isNaN(order.parts[2]))
+
+   return secondRegister !== undefined || !isNaN(order.parts[2]);
+}
+
+// Return the second register value or number added by user
+function numberOrSecRegister(order) {
+   let secondRegister = variables.find(({ name }) => name === order.parts[2]);
+   if (secondRegister !== undefined) {
+      return secondRegister.value;
+   } else {
+      return order.parts[2];
+   }
+}
+
+
+/* function secondRegisterOrNumber(order) {
    // Controling the thrid part
    if (isNaN(order.parts[2])) {
       // If second register exists return its value
       var variableToUse = variables.find(({ name }) => name === order.parts[2]);
-      if (variableToUse != undefined) {
-         console.log(variableToUse.value)
-         return variableToUse.value
-      } else {
-         console.log(`${order.parts[2]} does not exist.`)
-         // salir de la funcion sin seguir
-      }
+      return variableToUse.value
    } else {
       return Number(order.parts[2]);
    }
-}
+} */
 
 module.exports = execute;
