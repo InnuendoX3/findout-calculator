@@ -43,7 +43,7 @@ function orderRegister(order) {
 
    if (allreadyVariable !== undefined) {
       if (isSecRegisterValid(order)) {
-         //makeOperation(order, allreadyVariable)
+         makeOperation(order, allreadyVariable)
          console.log("First esta en variables y second register es un numero o variable VALIDA")
       } else {
          console.log(`${order.parts[2]} does not exist registered.`);
@@ -64,29 +64,25 @@ function orderRegister(order) {
    }
    console.log(variables);
 
-   /*       console.log(`${order.parts[2]} does not exist.`)
-         console.log(suspectedSecondRegister)
-         console.log(suspectedSecondRegister != undefined)
-         console.log(!isNaN(order.parts[2])) */
-
 }
 
 // Mini functions for orderRegister
-function makeOperation(order, avariable) {
+function makeOperation(order, aVariable) {
    for (const operation of operations) {
       if (order.parts[1] === operation.operation) {
-         avariable.value = avariable.value + order.parts[2];
+         console.log( eval(aVariable.value + operation.operator + numberOrSecRegister(order)) );
+         aVariable.value = eval(aVariable.value + operation.operator + numberOrSecRegister(order));
       }
    }
 }
 
-// Return FALSE if second register is not on variables-array and NaN
+// Return FALSE if second register is not on variables-array and NaN  WORKS!
 function isSecRegisterValid(order) {
    let secondRegister = variables.find(({ name }) => name === order.parts[2]);
 
-   console.log(secondRegister !== undefined)
+/*    console.log(secondRegister !== undefined)
    console.log(!isNaN(order.parts[2]))
-   console.log(secondRegister !== undefined || !isNaN(order.parts[2]))
+   console.log(secondRegister !== undefined || !isNaN(order.parts[2])) */
 
    return secondRegister !== undefined || !isNaN(order.parts[2]);
 }
@@ -101,16 +97,5 @@ function numberOrSecRegister(order) {
    }
 }
 
-
-/* function secondRegisterOrNumber(order) {
-   // Controling the thrid part
-   if (isNaN(order.parts[2])) {
-      // If second register exists return its value
-      var variableToUse = variables.find(({ name }) => name === order.parts[2]);
-      return variableToUse.value
-   } else {
-      return Number(order.parts[2]);
-   }
-} */
 
 module.exports = execute;
