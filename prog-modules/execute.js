@@ -36,14 +36,14 @@ function orderPrint(order) {
 }
 
 function orderRegister(order) {
-   let variable = new Variable();
+   
 
    // Find if variable is already on variables array / taken from Mozilla
-   let allreadyVariable = variables.find(({ name }) => name === order.parts[0]);
+   let alreadyVariable = variables.find(({ name }) => name === order.parts[0]);
 
-   if (allreadyVariable !== undefined) {
+   if (alreadyVariable !== undefined) {
       if (isSecRegisterValid(order)) {
-         makeOperation(order, allreadyVariable)
+         makeOperation(order, alreadyVariable)
          console.log("First esta en variables y second register es un numero o variable VALIDA")
       } else {
          console.log(`${order.parts[2]} does not exist registered.`);
@@ -51,11 +51,9 @@ function orderRegister(order) {
    } else {
 
       if (isSecRegisterValid(order)) {
-         variable.name = order.parts[0];
-         variable.value = numberOrSecRegister(order);
-         // console.log(variable);
-         variables.push(variable);
-         // makeOperation(order, allreadyVariable)   ???
+
+         makeNewRegister(order);
+
          console.log("NO esta en variables y second register es un numero para guardar")
       } else {
          console.log(`${order.parts[2]} does not exist registered.`);
@@ -66,12 +64,22 @@ function orderRegister(order) {
 
 }
 
-// Mini functions for orderRegister
+function makeNewRegister(order) {
+   let variable = new Variable();
+
+   variable.name = order.parts[0];
+   variable.value = numberOrSecRegNumber(order);
+   // console.log(variable);
+   variables.push(variable);
+
+}
+
+// Make an operation with a variable that already exists
 function makeOperation(order, aVariable) {
    for (const operation of operations) {
       if (order.parts[1] === operation.operation) {
-         console.log( eval(aVariable.value + operation.operator + numberOrSecRegister(order)) );
-         aVariable.value = eval(aVariable.value + operation.operator + numberOrSecRegister(order));
+         console.log( eval(aVariable.value + operation.operator + numberOrSecRegNumber(order)) );
+         aVariable.value = eval(aVariable.value + operation.operator + numberOrSecRegNumber(order));
       }
    }
 }
@@ -88,12 +96,12 @@ function isSecRegisterValid(order) {
 }
 
 // Return the second register value or number added by user
-function numberOrSecRegister(order) {
+function numberOrSecRegNumber(order) {
    let secondRegister = variables.find(({ name }) => name === order.parts[2]);
    if (secondRegister !== undefined) {
       return secondRegister.value;
    } else {
-      return order.parts[2];
+      return Number(order.parts[2]);
    }
 }
 
