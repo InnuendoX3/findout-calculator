@@ -60,7 +60,7 @@ function validateTwoEntries(entries) {
       order.error = false;
    } else {
       order.error = true;
-      order.errorMsg = 'To see a register value type: Print <register>';
+      order.errorMsg = 'To see a register value type: Print <register>.';
    }
 
    return order;
@@ -73,7 +73,7 @@ function validateThreeEntries(entries) {
    // Check if first register name is valid
    if (!isNaN(order.parts[0])) {
       order.error = true;
-      order.errorMsg = `${order.parts[0]} is a number, please enter an alphanumeric register name`;
+      order.errorMsg = `${order.parts[0]} is a number, please enter an alphanumeric register name.`;
       return order;
    }
 
@@ -87,7 +87,7 @@ function validateThreeEntries(entries) {
    }
 
    order.error = true;
-   order.errorMsg = "To make a register use an operation word: Add, Subtract or Multiply";
+   order.errorMsg = `"${entries[1]}" is not a command. Try with: Add, Subtract or Multiply.`;
 
    return order;
 }
