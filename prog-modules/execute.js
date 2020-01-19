@@ -68,10 +68,14 @@ function makeNewRegister(order) {
    let variable = new Variable();
 
    variable.name = order.parts[0];
-   variable.value = numberOrSecRegNumber(order);
-   // console.log(variable);
-   variables.push(variable);
 
+   for (const operation of operations) {
+      if (order.parts[1] === operation.operation) {
+         variable.value = eval(variable.value + operation.operator + numberOrSecRegNumber(order));
+      }
+   }
+
+   variables.push(variable);
 }
 
 // Make an operation with a variable that already exists
