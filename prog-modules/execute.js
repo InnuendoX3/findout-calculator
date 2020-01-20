@@ -2,10 +2,12 @@ const classes = require("./classes");
 const operations = require("./operations");
 const Variable = classes.Variable;
 
-/* Variable {
+/* 
+Variable {
    name:
    value:
-} */
+} 
+*/
 
 let variables = [];
 
@@ -13,7 +15,7 @@ function execute(order) {
    // console.log(order);
    switch (order.type) {
       case "exit":
-         process.exit(); //funciona
+         process.exit(); 
          break;
       case "print":
          orderPrint(order);
