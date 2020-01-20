@@ -49,23 +49,19 @@ function orderRegister(order) {
    if (alreadyVariable !== undefined) {
       if (isSecRegisterValid(order)) {
          makeOperation(order, alreadyVariable)
-         // console.log("First esta en variables y second register es un numero o variable VALIDA") DELETE
       } else {
          console.log(`"${order.parts[2]}" is not registered.`);
       }
    } else {
 
       if (isSecRegisterValid(order)) {
-
          makeNewRegister(order);
-
-         // console.log("NO esta en variables y second register es un numero para guardar") DELETE
       } else {
          console.log(`"${order.parts[2]}" is not registered.`);
       }
 
    }
-   console.log(variables);
+   // console.log(variables);
 }
 
 // Make an operation on a new variable and push it
